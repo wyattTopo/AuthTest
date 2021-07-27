@@ -23,10 +23,24 @@ struct NetworkRequest {
     return urlComponents.url
   }
   
+  static var signOutURL: URL? {
+    var urlComponents = URLComponents()
+    urlComponents.scheme = "https"
+    urlComponents.host = "github.com"
+    urlComponents.path = "/logout"
+//    urlComponents.queryItems = [URLQueryItem(name: "client_id", value: NetworkRequest.clientID)]
+    return urlComponents.url
+  }
+  
   static func signInSession(completion: @escaping ASWebAuthenticationSession.CompletionHandler) -> ASWebAuthenticationSession? {
     guard let signInURL = signInURL else { return nil }
     return ASWebAuthenticationSession(url: signInURL,
                                       callbackURLScheme: callbackURLScheme,
                                       completionHandler: completion)
+  }
+  
+  static func signOutSafari(completion: @escaping (Bool) -> Void) {
+    guard let signOutURL = signOutURL else { return }
+    UIApplication.shared.open(signOutURL, options: [:], completionHandler: completion)
   }
 }

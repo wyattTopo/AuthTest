@@ -42,12 +42,19 @@ struct LoggedInView: View {
       successLabel
       Button(action: {
         viewModel.handleSignOutTap()
-        presentationMode.wrappedValue.dismiss()
       }) {
         buttonLabel
       }
+      Button(action: { presentationMode.wrappedValue.dismiss() }) {
+        EmptyView()
+      }
     }
     .navigationBarBackButtonHidden(true)
+    .onChange(of: viewModel.doShowLoggedIn) { doShowLoggedIn in
+      if !doShowLoggedIn {
+        presentationMode.wrappedValue.dismiss()
+      }
+    }
   }
 }
 

@@ -14,8 +14,13 @@ class LoggedInViewModel: ObservableObject {
   // Object reference to originating value in HomeViewModel
   @Binding var doShowLoggedIn: Bool
   
+  // Imperfect solution to logout -> redirects to Safari and blindy returns to sign in screen once the logout page is shown in safari. Requires re-nav to app. Also works to display in app using another ASWebAuthenticationSession, but the UI for that is very confusing to a user.
   func handleSignOutTap() {
-    doShowLoggedIn = false
+    NetworkRequest.signOutSafari() { [weak self] success in
+      if success {
+        self?.doShowLoggedIn = false
+      }
+    }
   }
   
   init(_ doShowLoggedIn: Binding<Bool>) {
