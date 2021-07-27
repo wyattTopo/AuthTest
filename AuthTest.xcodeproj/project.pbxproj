@@ -15,6 +15,7 @@
 		7E0E80BC26B09D2F00322D36 /* LoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0E80BB26B09D2F00322D36 /* LoggedInView.swift */; };
 		7E0E80BE26B09DB100322D36 /* LoggedInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0E80BD26B09DB100322D36 /* LoggedInViewModel.swift */; };
 		7E0E80C026B0A81C00322D36 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E0E80BF26B0A81C00322D36 /* LaunchScreen.storyboard */; };
+		7E0E80C326B0AC8000322D36 /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0E80C226B0AC8000322D36 /* NetworkRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		7E0E80BB26B09D2F00322D36 /* LoggedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInView.swift; sourceTree = "<group>"; };
 		7E0E80BD26B09DB100322D36 /* LoggedInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInViewModel.swift; sourceTree = "<group>"; };
 		7E0E80BF26B0A81C00322D36 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7E0E80C226B0AC8000322D36 /* NetworkRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				7E0E80B726B088F000322D36 /* LaunchScreen */,
 				7E0E80B826B0923E00322D36 /* ViewModels */,
 				7E0E80B626B088BE00322D36 /* Views */,
+				7E0E80C126B0AC3200322D36 /* Models */,
 				7E0E80A726B0888300322D36 /* AuthTestApp.swift */,
 				7E0E80AB26B0888700322D36 /* Assets.xcassets */,
 				7E0E80B026B0888700322D36 /* Info.plist */,
@@ -103,6 +106,14 @@
 				7E0E80BD26B09DB100322D36 /* LoggedInViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		7E0E80C126B0AC3200322D36 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7E0E80C226B0AC8000322D36 /* NetworkRequest.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -179,6 +190,7 @@
 				7E0E80BC26B09D2F00322D36 /* LoggedInView.swift in Sources */,
 				7E0E80BA26B0983E00322D36 /* HomeViewModel.swift in Sources */,
 				7E0E80BE26B09DB100322D36 /* LoggedInViewModel.swift in Sources */,
+				7E0E80C326B0AC8000322D36 /* NetworkRequest.swift in Sources */,
 				7E0E80A826B0888300322D36 /* AuthTestApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
