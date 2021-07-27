@@ -23,7 +23,7 @@ struct LoggedInView: View {
   }
   
   var successLabel: some View {
-    Text("Successfully signed in")
+    Text("Repo Count: \(viewModel.repoCount)")
       .padding(.bottom, 40)
       .font(.system(size: 24, weight: .semibold, design: .default))
   }
@@ -50,6 +50,9 @@ struct LoggedInView: View {
       }
     }
     .navigationBarBackButtonHidden(true)
+    .onAppear {
+      viewModel.load()
+    }
     .onChange(of: viewModel.doShowLoggedIn) { doShowLoggedIn in
       if !doShowLoggedIn {
         presentationMode.wrappedValue.dismiss()
