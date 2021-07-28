@@ -20,11 +20,32 @@ enum NetworkRequest {
   static let clientID = "Iv1.0a4e211ef4ed245b"
   static let clientSecret = "186b1751cb41bccc7f9d8fbcf50ca07f6485e6e7"
   
-  static var accessToken: String?
-  static var refreshToken: String?
-  static var username: String?
+  static var accessToken: String? {
+    get { UserDefaults.standard.string(forKey: "accessToken") }
+    set { UserDefaults.standard.setValue(newValue, forKey: "accessToken") }
+  }
+  
+  static var refreshToken: String? {
+    get { UserDefaults.standard.string(forKey: "refreshToken") }
+    set { UserDefaults.standard.setValue(newValue, forKey: "refreshToken") }
+  }
+  
+  static var username: String? {
+    get { UserDefaults.standard.string(forKey: "username") }
+    set { UserDefaults.standard.setValue(newValue, forKey: "username") }
+  }
+  
+  static var hasLoginStored: Bool {
+    return accessToken != nil && username != nil
+  }
+  
+  static func clearStoredData() {
+    accessToken = nil
+    refreshToken = nil
+    username = nil
+  }
 
-  var requestHttpMethod: String? {
+  private var requestHttpMethod: String? {
     switch self {
     case .codeExchange, .getUser, .getRepos:
       return "GET"
@@ -33,7 +54,7 @@ enum NetworkRequest {
     }
   }
   
-  var host: String {
+  private var host: String {
     switch self {
     case .signIn, .signOut, .codeExchange:
       return "github.com"
@@ -42,7 +63,7 @@ enum NetworkRequest {
     }
   }
   
-  var path: String? {
+  private var path: String? {
     switch self {
     case .signIn:
       return "/login/oauth/authorize"
@@ -58,7 +79,7 @@ enum NetworkRequest {
     }
   }
   
-  var queryItems: [URLQueryItem] {
+  private var queryItems: [URLQueryItem] {
     switch self {
     case .signIn:
       return [URLQueryItem(name: "client_id", value: NetworkRequest.clientID)]
@@ -71,7 +92,7 @@ enum NetworkRequest {
     }
   }
   
-  var url: URL? {
+  private var url: URL? {
     guard let path = path else { return nil }
     var urlComponents = URLComponents()
     urlComponents.scheme = "https"
@@ -79,6 +100,26 @@ enum NetworkRequest {
     urlComponents.path = path
     urlComponents.queryItems = queryItems
     return urlComponents.url
+  }
+  
+  private var request: URLRequest? {
+    guard let url = url,
+          let requestHttpMethod = requestHttpMethod else {
+      return nil
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = requestHttpMethod
+    
+    switch self {
+    case .getUser, .getRepos:
+      guard let accessToken = NetworkRequest.accessToken else { return nil }
+      request.setValue("token \(accessToken)", forHTTPHeaderField: "Authorization")
+    case .signIn, .signOut, .codeExchange:
+      break
+    }
+    
+    return request
   }
   
   static func signInSession(completion: @escaping ASWebAuthenticationSession.CompletionHandler) -> ASWebAuthenticationSession? {
@@ -101,18 +142,9 @@ enum NetworkRequest {
   
   func startGet<T: Decodable>(responseType: T.Type,
                               completionHandler: @escaping ((Result<(response: HTTPURLResponse, object: T), Error>) -> Void)) {
-    guard let url = url,
-          let requestHttpMethod = requestHttpMethod else {
+    guard let request = request else {
       completionHandler(.failure(NetworkError.invalidRequest))
       return
-    }
-    
-    var request = URLRequest(url: url)
-    request.httpMethod = requestHttpMethod
-    
-    if let accessToken = NetworkRequest.accessToken {
-      request.setValue("token \(accessToken)",
-                       forHTTPHeaderField: "Authorization")
     }
     
     let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -141,7 +173,7 @@ enum NetworkRequest {
   }
   
   // Non-JSON parse required for GitHub auth code response
-  static func parseCodeResponse(_ data: Data) -> CodeResponse? {
+  static private func parseCodeResponse(_ data: Data) -> CodeResponse? {
     guard let responseString = String(data: data, encoding: .utf8) else { return nil }
     var responseDict = [String:String]()
     let responseComponents = responseString.components(separatedBy: "&")

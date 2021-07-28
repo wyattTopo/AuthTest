@@ -14,10 +14,12 @@ class LoggedInViewModel: ObservableObject {
   // Object reference to originating value in HomeViewModel
   @Binding var doShowLoggedIn: Bool
   @Published var repoCount: Int = 0
+  let username: String
   
   init(_ doShowLoggedIn: Binding<Bool>) {
     // Use underscore to set actual Binding type rather than wrapped value
     self._doShowLoggedIn = doShowLoggedIn
+    self.username = NetworkRequest.username ?? ""
   }
   
   func load() {
@@ -39,6 +41,7 @@ class LoggedInViewModel: ObservableObject {
   func handleSignOutTap() {
     NetworkRequest.signOutSafari() { [weak self] success in
       if success {
+        NetworkRequest.clearStoredData()
         self?.doShowLoggedIn = false
       }
     }

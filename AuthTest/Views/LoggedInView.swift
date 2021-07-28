@@ -21,11 +21,15 @@ struct LoggedInView: View {
   init(_ doShowLoggedIn: Binding<Bool>) {
     self.viewModel = LoggedInViewModel(doShowLoggedIn)
   }
-  
   var successLabel: some View {
-    Text("Repo Count: \(viewModel.repoCount)")
-      .padding(.bottom, 40)
-      .font(.system(size: 24, weight: .semibold, design: .default))
+    VStack {
+      Text("Hello \(viewModel.username),")
+        .padding(.bottom, 12)
+        .font(.system(size: 36, weight: .semibold, design: .default))
+      Text("you have \(viewModel.repoCount) repos")
+        .font(.system(size: 24, weight: .regular, design: .default))
+    }
+    .padding(.bottom, 40)
   }
   
   var buttonLabel: some View {

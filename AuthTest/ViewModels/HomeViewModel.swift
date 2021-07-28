@@ -12,6 +12,14 @@ class HomeViewModel: NSObject, ObservableObject, HomeViewDelegate {
   @Published var doShowLoggedIn = false
   
   func handleSignInTap() {
+    if NetworkRequest.hasLoginStored {
+      self.doShowLoggedIn = true
+    } else {
+      beginAuth()
+    }
+  }
+  
+  private func beginAuth() {
     let authSession = NetworkRequest.signInSession { [weak self] (url, error) in
       guard let self = self,
             error == nil,
