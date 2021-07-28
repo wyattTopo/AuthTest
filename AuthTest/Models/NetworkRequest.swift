@@ -16,7 +16,7 @@ enum NetworkRequest {
   case getRepos
   
   // MARK: Private Constants
-  static let callbackURLScheme = "authhub"
+  static let callbackURLScheme = "authtest"
   static let clientID = "Iv1.0a4e211ef4ed245b"
   static let clientSecret = "186b1751cb41bccc7f9d8fbcf50ca07f6485e6e7"
   
